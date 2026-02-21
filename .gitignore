@@ -1,0 +1,19 @@
+# Compiled binaries
+*.exe
+*.o
+*.obj
+
+# Logs
+*.log
+
+# IDE/project files
+.vscode/
+.idea/
+.libraries/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
