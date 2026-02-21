@@ -1,6 +1,8 @@
 # 🧰 Personal Windows Toolkit
 
-A collection of lightweight Python scripts for everyday file and media tasks — no GUI needed, just drop files and run.
+Hey! I'm just someone who loves editing videos, playing games, and finding ways to make everyday computer tasks less painful. I built these scripts for myself — to save time, free up disk space, stay in Roblox without getting kicked, and handle all the boring file conversion stuff that comes with video editing as a hobby.
+
+I'm sharing them on GitHub because someone out there probably needs the exact same thing. No fancy GUI, no bloated software — just Python scripts you drop and run. Hope it helps! 🙌
 
 ---
 
@@ -8,15 +10,17 @@ A collection of lightweight Python scripts for everyday file and media tasks —
 
 | Tool | Description |
 |------|-------------|
-| [`converter.py`](#-pdf--word-converter) | Convert PDF ↔ Word automatically |
-| [`converter_audio.py`](#-audio--video-format-converter) | Convert audio/video to any format via FFmpeg |
-| [`downloader.py`](#-batch-video-downloader) | Download videos from YouTube, TikTok, Instagram, Facebook & more |
+| [`converter-pdf-word.py`](#-pdf--word-converter) | Convert PDF ↔ Word automatically |
+| [`converter-audiofile.py`](#-audio--video-format-converter) | Convert audio/video to any format via FFmpeg |
+| [`vids-download.py`](#-batch-video-downloader) | Download videos from YouTube, TikTok, Instagram, Facebook & more |
+| [`find_large_files.py`](#-large-file-finder) | Scan a drive and list the biggest files eating your storage |
+| [`anti-afk-roblox.py`](#-roblox-anti-afk) | Stay active in Roblox so you don't get kicked while AFK |
 
 ---
 
 ## 📄 PDF ↔ Word Converter
 
-Automatically detects file type and converts in the right direction — no flags, no options.
+When you work with a lot of documents, switching between PDF and Word gets tedious fast. This script detects the file type and converts in the right direction automatically — no flags, no options, no thinking required.
 
 ### Setup
 
@@ -77,7 +81,7 @@ Supports **batch conversion** — drop multiple files and they all get converted
 
 ## 🎧 Audio / Video Format Converter
 
-Convert any audio or video file to your chosen format using FFmpeg. Supports extracting audio from video files too.
+As a video editor, I constantly need to convert between formats — extracting audio from footage, converting clips for different platforms, preparing voice samples for AI tools. This handles all of it from the terminal with a simple menu.
 
 ### Requirements
 
@@ -138,7 +142,7 @@ Drop your files into `ScriptsConvert/` and run. You'll be shown a menu to choose
 
 ## 🎬 Batch Video Downloader
 
-Download videos from YouTube, TikTok, Facebook, Instagram, and 1000+ other sites. Paste links into a text file and batch download with your chosen quality.
+I save a lot of reference videos for editing inspiration — tutorials, transitions, effects, clips from different platforms. Copying links one by one into a downloader app is slow. This lets me paste a whole bunch of links from any site into a text file and download them all at once, at the quality I want.
 
 ### Requirements
 
@@ -228,6 +232,99 @@ python downloader.py
 
 ---
 
+## 🗂️ Large File Finder
+
+Video editing eats storage fast. Raw footage, project files, renders — before you know it your drive is full. Instead of guessing what to delete, this script scans any drive or folder and lists the biggest files so you can decide what's worth keeping.
+
+### Requirements
+
+No extra packages needed — uses only Python's standard library.
+
+### Usage
+
+Open `find_large_files.py` and set your target drive and preferences at the bottom:
+
+```python
+drive = "D:\\"       # Change to the drive or folder you want to scan
+TOP_N = 60           # How many files to list
+MIN_SIZE_MB = 100    # Ignore files smaller than this (in MB)
+```
+
+Then run:
+
+```bash
+python find_large_files.py
+```
+
+### Example Output
+
+```
+Scanning D:\ … (this can take several minutes)
+Skipping permission denied folders and broken symlinks
+
+Top 10 largest files ≥ 100 MB on D:\
+
+Size           │ Path
+────────────────────────────────────────────────────────────────────────────────
+  24.3 GiB     │ D:\Projects\footage\RAW_4K_shoot.mov
+  12.1 GiB     │ D:\Projects\renders\final_export_v3.mp4
+   8.7 GiB     │ D:\Games\SomeGame\gamedata.pak
+   4.2 GiB     │ D:\Backups\old_backup_2024.zip
+   ...
+
+Total size of shown files : 49.3 GiB
+Date: 2026-02-21 14:45
+```
+
+### Notes
+
+- Skips system folders like `Windows`, `WinSxS`, `$RECYCLE.BIN`, `AppData` by default to avoid clutter — you can edit the `folders_to_skip` set in the script if needed
+- Gracefully skips files with permission errors or that disappear mid-scan
+- No files are deleted — this is read-only, purely for visibility
+
+---
+
+## 🎮 Roblox Anti-AFK
+
+Sometimes you need to step away from Roblox without getting kicked. This script simulates small random movement bursts every 4–6 minutes to keep your character active — enough to fool the AFK detection without being too obvious.
+
+### Requirements
+
+```bash
+pip install pydirectinput keyboard
+```
+
+### Usage
+
+1. Open Roblox and get into your game
+2. Run the script:
+
+```bash
+python anti_afk.py
+```
+
+3. Click into the Roblox window to make sure it's focused
+4. Press **ESC** anytime to stop cleanly
+
+### How It Works
+
+Every 4 to 6 minutes (randomized so it doesn't look like a bot), it presses a short random sequence of `W`, `A`, `S`, `D`, and `Space` with human-like timing and small delays between each key. The randomness in both timing and key choice makes it look natural.
+
+```
+Anti-AFK started. Press ESC anytime to stop.
+Make sure Roblox window is active / focused.
+Will press random movement + jump every 4–6 minutes.
+
+Waiting 5 min 23 sec...
+→ Did a short movement/jump burst
+Waiting 4 min 47 sec...
+→ Did a short movement/jump burst
+```
+
+> ⚠️ Use responsibly and only in games/servers where this is acceptable. Some games have strict rules against automation.
+
+---
+
 ## 🛠️ Requirements Summary
 
 | Tool | Python Packages | External |
@@ -235,16 +332,18 @@ python downloader.py
 | PDF ↔ Word | `python-docx` `docx2pdf` `pdf2docx` | — |
 | Audio / Video Converter | — | FFmpeg |
 | Video Downloader | `yt-dlp` | FFmpeg (recommended) |
+| Large File Finder | — | — |
+| Roblox Anti-AFK | `pydirectinput` `keyboard` | — |
 
 ### Install all Python packages at once
 
 ```bash
-pip install python-docx docx2pdf pdf2docx yt-dlp
+pip install python-docx docx2pdf pdf2docx yt-dlp pydirectinput keyboard
 ```
 
 ### Install FFmpeg
 
-- **Windows**: Download from [ffmpeg.org](https://ffmpeg.org/download.html) and add to PATH, or use `winget install ffmpeg`
+- **Windows**: `winget install ffmpeg` or download from [ffmpeg.org](https://ffmpeg.org/download.html) and add to PATH
 - **macOS**: `brew install ffmpeg`
 - **Linux**: `sudo apt install ffmpeg`
 
@@ -253,12 +352,12 @@ pip install python-docx docx2pdf pdf2docx yt-dlp
 ## 📝 Notes
 
 - **Python 3.8+** required
-- All scripts are standalone — run each independently
-- Tested on Windows; should work on macOS and Linux too
-- For private Instagram/Facebook content, you may need to pass cookies to yt-dlp
+- All scripts are standalone — each one works on its own, no shared dependencies between them
+- Primarily built and tested on **Windows**, but the converter and downloader scripts should work on macOS and Linux too
+- For private Instagram/Facebook content, you may need to pass browser cookies to yt-dlp
 
 ---
 
 ## 📃 License
 
-MIT — free to use, modify, and distribute.
+MIT — free to use, modify, and share. If it helped you, that's enough. ✌️
